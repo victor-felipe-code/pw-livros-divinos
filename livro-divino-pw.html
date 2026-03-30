@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Livro Divino — Perfect World</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --gold-dark: #8a6820;
+    --ink: #0d0b08;
+    --parchment: #f5ecd0;
+    --parchment-dark: #e8d9b0;
+    --parchment-mid: #efe3c0;
+    --red: #8b1a1a;
+    --red-light: #c0392b;
+    --blue-divine: #1a2a5e;
+    --shadow: rgba(0,0,0,0.5);
+    --glow: rgba(201,168,76,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ink);
+    font-family: 'Crimson Pro', serif;
+    color: var(--parchment);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(26,42,94,0.15) 0%, transparent 50%),
+      repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(201,168,76,0.02) 60px, rgba(201,168,76,0.02) 61px),
+      repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(201,168,76,0.02) 60px, rgba(201,168,76,0.02) 61px);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 2.5rem 1rem 1.5rem;
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+    background: linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 100%);
+  }
+
+  .header-ornament {
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .ornament-line {
+    flex: 1; max-width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .ornament-diamond {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  header h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    letter-spacing: 0.12em;
+    background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    line-height: 1.1;
+  }
+
+  header p {
+    font-size: 0.9rem; color: rgba(201,168,76,0.6);
+    letter-spacing: 0.25em; text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  /* MAIN LAYOUT */
+  .app-container {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 0;
+    min-height: calc(100vh - 130px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: rgba(13,11,8,0.7);
+    border-right: 1px solid rgba(201,168,76,0.2);
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 130px);
+    position: sticky; top: 0;
+  }
+
+  .sidebar-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  /* SEARCH */
+  .search-box {
+    position: relative; margin-bottom: 1.2rem;
+  }
+
+  .search-box input {
+    width: 100%;
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--parchment);
+    padding: 0.55rem 0.8rem 0.55rem 2.2rem;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .search-box input:focus {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.1);
+  }
+
+  .search-box input::placeholder { color: rgba(201,168,76,0.35); }
+
+  .search-icon {
+    position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%);
+    color: rgba(201,168,76,0.4); font-size: 0.9rem; pointer-events: none;
+  }
+
+  /* FILTER PILLS */
+  .filter-row {
+    display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem;
+  }
+
+  .pill {
+    padding: 0.25rem 0.65rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    color: rgba(201,168,76,0.6);
+  }
+
+  .pill.active, .pill:hover {
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+
+  /* STAT FILTER */
+  .stat-filter { margin-bottom: 1.2rem; }
+  .stat-filter label {
+    display: block; font-size: 0.72rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: rgba(201,168,76,0.5); margin-bottom: 0.4rem;
+  }
+
+  .stat-filter select {
+    width: 100%;
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--parchment);
+    padding: 0.45rem 0.7rem;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .stat-filter select:focus { border-color: var(--gold); }
+  .stat-filter select option { background: #1a1610; }
+
+  /* CHECKLIST — MEUS LIVROS */
+  .my-books-section { margin-top: 1.5rem; }
+
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .clear-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: rgba(201,168,76,0.4);
+    cursor: pointer;
+    background: none; border: none;
+    transition: color 0.2s;
+    text-transform: uppercase;
+  }
+  .clear-btn:hover { color: var(--red-light); }
+
+  /* OWNED BOOKS LIST */
+  .owned-list {
+    display: flex; flex-direction: column; gap: 0.4rem;
+    max-height: 260px; overflow-y: auto;
+  }
+
+  .owned-item {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 3px;
+    padding: 0.4rem 0.5rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .owned-item:hover { background: rgba(201,168,76,0.1); border-color: rgba(201,168,76,0.3); }
+  .owned-item.active { background: rgba(201,168,76,0.15); border-color: var(--gold); }
+
+  .owned-item img { width: 24px; height: 24px; object-fit: contain; image-rendering: pixelated; }
+
+  .owned-item-name {
+    font-size: 0.82rem; flex: 1;
+    color: var(--parchment);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .owned-item-lvl {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    padding: 0.1rem 0.3rem;
+    border-radius: 2px;
+  }
+
+  .empty-owned {
+    text-align: center; padding: 1.5rem 0;
+    color: rgba(201,168,76,0.25);
+    font-style: italic; font-size: 0.85rem;
+  }
+
+  /* REQUIRED MATERIALS */
+  .materials-needed {
+    margin-top: 1.5rem;
+    background: rgba(139,26,26,0.08);
+    border: 1px solid rgba(139,26,26,0.25);
+    border-radius: 4px;
+    padding: 0.9rem;
+  }
+
+  .mat-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: #c0392b; margin-bottom: 0.7rem;
+  }
+
+  .mat-item {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    font-size: 0.82rem;
+  }
+
+  .mat-item:last-child { border-bottom: none; }
+  .mat-item img { width: 20px; height: 20px; object-fit: contain; image-rendering: pixelated; }
+  .mat-item-qty {
+    margin-left: auto;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+  }
+
+  /* MAIN CONTENT */
+  .main-content {
+    padding: 1.5rem;
+    overflow-y: auto;
+  }
+
+  /* ABA TABS */
+  .tabs-row {
+    display: flex; gap: 0.3rem; flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding-bottom: 0;
+  }
+
+  .tab-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.5);
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: 2px solid transparent;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative; bottom: -1px;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .tab-btn:hover { color: var(--gold); background: rgba(201,168,76,0.05); }
+
+  .tab-btn.active {
+    color: var(--gold);
+    border-color: rgba(201,168,76,0.3) rgba(201,168,76,0.3) var(--ink);
+    background: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+
+  /* GRID */
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  /* BOOK CARD */
+  .book-card {
+    background: linear-gradient(135deg, rgba(201,168,76,0.04) 0%, rgba(13,11,8,0.8) 100%);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 6px;
+    padding: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .book-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.2s;
+  }
+
+  .book-card:hover { border-color: rgba(201,168,76,0.45); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+  .book-card:hover::before { opacity: 1; }
+
+  .book-card.owned {
+    border-color: rgba(201,168,76,0.5);
+    background: linear-gradient(135deg, rgba(201,168,76,0.1) 0%, rgba(13,11,8,0.8) 100%);
+  }
+
+  .book-card.owned::after {
+    content: '✓';
+    position: absolute; top: 0.5rem; right: 0.6rem;
+    color: var(--gold); font-size: 0.9rem;
+    font-weight: bold;
+  }
+
+  .card-top {
+    display: flex; align-items: flex-start; gap: 0.7rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .card-img-wrap {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  .card-img-wrap img {
+    width: 40px; height: 40px; object-fit: contain;
+    image-rendering: pixelated;
+  }
+
+  .card-info { flex: 1; min-width: 0; }
+
+  .card-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--parchment);
+    line-height: 1.3;
+    margin-bottom: 0.2rem;
+  }
+
+  .card-level {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: var(--gold-dark);
+    background: rgba(201,168,76,0.1);
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .card-effects {
+    display: flex; flex-wrap: wrap; gap: 0.25rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .effect-tag {
+    font-size: 0.7rem;
+    color: #88c5ff;
+    background: rgba(136,197,255,0.08);
+    border: 1px solid rgba(136,197,255,0.15);
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+  }
+
+  .card-mats {
+    display: flex; gap: 0.3rem; flex-wrap: wrap;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .mat-thumb {
+    width: 22px; height: 22px;
+    object-fit: contain; image-rendering: pixelated;
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+
+  .mat-thumb:hover { border-color: var(--gold); }
+
+  .mat-thumb-placeholder {
+    width: 22px; height: 22px;
+    background: rgba(201,168,76,0.04);
+    border: 1px dashed rgba(201,168,76,0.15);
+    border-radius: 3px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.55rem; color: rgba(201,168,76,0.2);
+  }
+
+  /* TOGGLE OWNED BTN */
+  .toggle-owned-btn {
+    display: block; width: 100%; margin-top: 0.7rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.25);
+    color: rgba(201,168,76,0.5);
+    padding: 0.35rem;
+    cursor: pointer; border-radius: 3px;
+    transition: all 0.2s;
+  }
+
+  .toggle-owned-btn:hover, .book-card.owned .toggle-owned-btn {
+    background: rgba(201,168,76,0.12);
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .book-card.owned .toggle-owned-btn {
+    background: rgba(201,168,76,0.15);
+    border-color: var(--gold);
+  }
+
+  /* DETAIL MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.75);
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: linear-gradient(160deg, #1a1610 0%, #0d0b08 100%);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 500px; width: 90%;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 40px rgba(201,168,76,0.08);
+  }
+
+  .modal-close {
+    position: absolute; top: 0.8rem; right: 0.8rem;
+    background: none; border: none;
+    color: rgba(201,168,76,0.4); font-size: 1.2rem;
+    cursor: pointer; transition: color 0.2s;
+    line-height: 1;
+  }
+
+  .modal-close:hover { color: var(--red-light); }
+
+  .modal-top {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .modal-img {
+    width: 60px; height: 60px;
+    object-fit: contain; image-rendering: pixelated;
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 6px; padding: 4px;
+  }
+
+  .modal-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem; font-weight: 700;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .modal-section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(201,168,76,0.5); margin-bottom: 0.6rem;
+  }
+
+  .modal-effects {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .modal-effect-tag {
+    font-size: 0.9rem;
+    color: #88c5ff;
+    background: rgba(136,197,255,0.08);
+    border: 1px solid rgba(136,197,255,0.2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+  }
+
+  .modal-mats {
+    display: flex; flex-direction: column; gap: 0.5rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .modal-mat-row {
+    display: flex; align-items: center; gap: 0.7rem;
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 4px;
+    padding: 0.45rem 0.6rem;
+  }
+
+  .modal-mat-row img {
+    width: 28px; height: 28px; object-fit: contain; image-rendering: pixelated;
+  }
+
+  .modal-mat-name { flex: 1; font-size: 0.9rem; }
+
+  .modal-mat-qty {
+    font-family: 'Cinzel', serif; font-size: 0.75rem;
+    color: var(--gold); background: rgba(201,168,76,0.1);
+    padding: 0.15rem 0.45rem; border-radius: 2px;
+  }
+
+  .modal-toggle-btn {
+    width: 100%;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.65rem;
+    border-radius: 4px; cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid var(--gold);
+    background: rgba(201,168,76,0.1);
+    color: var(--gold);
+  }
+
+  .modal-toggle-btn:hover { background: rgba(201,168,76,0.2); }
+  .modal-toggle-btn.owned-state { background: var(--gold); color: var(--ink); }
+  .modal-toggle-btn.owned-state:hover { background: var(--gold-light); }
+
+  /* TOOLTIP */
+  .tooltip {
+    position: fixed; z-index: 2000;
+    background: rgba(13,11,8,0.95);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 4px; padding: 0.4rem 0.6rem;
+    font-size: 0.8rem; color: var(--parchment);
+    pointer-events: none;
+    max-width: 200px;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center; padding: 4rem 1rem;
+    color: rgba(201,168,76,0.25);
+  }
+
+  .empty-state .empty-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+  .empty-state p { font-style: italic; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: rgba(201,168,76,0.04); }
+  ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.35); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+    padding: 0.8rem 1.5rem;
+    background: rgba(201,168,76,0.03);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem; letter-spacing: 0.1em;
+    color: rgba(201,168,76,0.5);
+  }
+
+  .stat-val { color: var(--gold); font-size: 0.85rem; }
+
+  @media (max-width: 800px) {
+    .app-container { grid-template-columns: 1fr; }
+    .sidebar { max-height: none; position: static; border-right: none; border-bottom: 1px solid rgba(201,168,76,0.2); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">
+    <div class="ornament-line"></div>
+    <div class="ornament-diamond"></div>
+    <div class="ornament-line"></div>
+  </div>
+  <h1>Livro Divino</h1>
+  <p>Perfect World — Gerenciador de Crafting</p>
+</header>
+
+<div class="stats-bar" id="statsBar">
+  <span>Total: <span class="stat-val" id="totalCount">0</span></span>
+  <span>Obtidos: <span class="stat-val" id="ownedCount">0</span></span>
+  <span>Visíveis: <span class="stat-val" id="visibleCount">0</span></span>
+</div>
+
+<div class="app-container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">⚗ Filtros</div>
+
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Buscar livro..." autocomplete="off">
+    </div>
+
+    <div class="stat-filter">
+      <label>Filtrar por Atributo</label>
+      <select id="statFilter">
+        <option value="">Todos os atributos</option>
+        <option value="For">Força (For)</option>
+        <option value="Dex">Destreza (Dex)</option>
+        <option value="Con">Constituição (Con)</option>
+        <option value="Int">Inteligência (Int)</option>
+        <option value="Mov">Velocidade (Mov)</option>
+        <option value="Crítico">Crítico</option>
+        <option value="HP">HP</option>
+        <option value="MP">MP</option>
+        <option value="Recup">Recuperação</option>
+        <option value="Exp">Experiência</option>
+        <option value="Invoc">Invocação</option>
+        <option value="Red">Redução de Dano</option>
+        <option value="Vel">Velocidade de Ataque</option>
+      </select>
+    </div>
+
+    <div class="filter-row" id="ownedFilter">
+      <button class="pill active" data-filter="all">Todos</button>
+      <button class="pill" data-filter="owned">Obtidos</button>
+      <button class="pill" data-filter="missing">Faltando</button>
+    </div>
+
+    <hr style="border:none;border-top:1px solid rgba(201,168,76,0.12);margin:0.5rem 0 1rem">
+
+    <div class="my-books-section">
+      <div class="section-header">
+        <span class="section-label">📚 Meus Livros</span>
+        <button class="clear-btn" id="clearAll">Limpar tudo</button>
+      </div>
+      <div class="owned-list" id="ownedList">
+        <div class="empty-owned">Nenhum livro obtido ainda.</div>
+      </div>
+    </div>
+
+    <div class="materials-needed" id="materialsNeeded" style="display:none">
+      <div class="mat-title">🧪 Materiais para Próximo Nível</div>
+      <div id="matsList"></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <div class="tabs-row" id="tabsRow"></div>
+    <div class="books-grid" id="booksGrid"></div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal-top">
+      <img class="modal-img" id="modalImg" src="" alt="">
+      <div>
+        <div class="modal-name" id="modalName"></div>
+        <span id="modalLevel" style="font-family:Cinzel,serif;font-size:0.65rem;color:var(--gold-dark);background:rgba(201,168,76,0.1);padding:0.1rem 0.4rem;border-radius:2px;border:1px solid rgba(201,168,76,0.2)"></span>
+      </div>
+    </div>
+    <div class="modal-section-label">Efeitos</div>
+    <div class="modal-effects" id="modalEffects"></div>
+    <div class="modal-section-label">Materiais Necessários</div>
+    <div class="modal-mats" id="modalMats"></div>
+    <button class="modal-toggle-btn" id="modalToggleBtn"></button>
+  </div>
+</div>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const DATA = [{"titulo":"Nível do Livro:\n\t\nQtde Total de Itens:","items":[]},{"titulo":"Aba I","items":[{"nivel":"1","imagem":"images/1-5.png","nome":"Poder Interno","efeitos":["For +5"],"materiais":[{"nome":"Fragmentos de Escrita Divina","quantidade":3,"imagem":"images/fragmentodeescritadivina.jpg"},{"nome":"Livros em Branco Divino","quantidade":4,"imagem":"images/Livroembrancodivino.jpg"}]},{"nivel":"1","imagem":"images/2-5.png","nome":"Favor do Imperador","efeitos":["Dex +5"],"materiais":[{"nome":"Fragmentos de Escrita Divina","quantidade":3,"imagem":"images/fragmentodeescritadivina.jpg"},{"nome":"Livros em Branco Divino","quantidade":4,"imagem":"images/Livroembrancodivino.jpg"}]},{"nivel":"1","imagem":"images/3-6.jpg","nome":"Orgulho Paterno","efeitos":["Con +5"],"materiais":[{"nome":"Fragmentos de Escrita Divina","quantidade":3,"imagem":"images/fragmentodeescritadivina.jpg"},{"nome":"Livros em Branco Divino","quantidade":4,"imagem":"images/Livroembrancodivino.jpg"}]},{"nivel":"1","imagem":"images/4-3.png","nome":"Sorriso da Flora","efeitos":["Int +5"],"materiais":[{"nome":"Fragmentos de Escrita Divina","quantidade":3,"imagem":"images/fragmentodeescritadivina.jpg"},{"nome":"Livros em Branco Divino","quantidade":4,"imagem":"images/Livroembrancodivino.jpg"}]},{"nivel":"1","imagem":"images/5-3.png","nome":"Escudo Primo","efeitos":["For +4","Con +3"],"materiais":[{"nome":"Fragmentos de Escrita Divina","quantidade":3,"imagem":"images/fragmentodeescritadivina.jpg"},{"nome":"Livros em Branco Divino","quantidade":4,"imagem":"images/Livroembrancodivino.jpg"}]},{"nivel":"1","imagem":"images/6-3.png","nome":"Pessegueiro","efeitos":["Dex +4","Con +3"],"materiais":[{"nome":"Fragmentos de Escrita Divina","quantidade":3,"imagem":"images/fragmentodeescritadivina.jpg"},{"nome":"Livros em Branco Divino","quantidade":4,"imagem":"images/Livroembrancodivino.jpg"}]},{"nivel":"1","imagem":"images/7-1.png","nome":"Chama Kármica","efeitos":["Int +4","Con +3"],"materiais":[{"nome":"Fragmentos de Escrita Divina","quantidade":3,"imagem":"images/fragmentodeescritadivina.jpg"},{"nome":"Livros em Branco Divino","quantidade":4,"imagem":"images/Livroembrancodivino.jpg"}]},{"nivel":"1","imagem":"images/8-1.png","nome":"Rio de Sangue","efeitos":["Recup. HP +3","Exp +1%"],"materiais":[{"nome":"Fragmentos de Escrita Divina","quantidade":3,"imagem":"images/fragmentodeescritadivina.jpg"},{"nome":"Livros em Branco Divino","quantidade":4,"imagem":"images/Livroembrancodivino.jpg"}]},{"nivel":"1","imagem":"images/9-1.png","nome":"Lua na Noite em Chamas","efeitos":["Recup. MP +3","Exp +1%"],"materiais":[{"nome":"Fragmentos de Escrita Divina","quantidade":3,"imagem":"images/fragmentodeescritadivina.jpg"},{"nome":"Livros em Branco Divino","quantidade":4,"imagem":"images/Livroembrancodivino.jpg"}]}]},{"titulo":"Aba II","items":[{"nivel":"2","imagem":"images/10-1.png","nome":"Resiliência","efeitos":["For +10"],"materiais":[{"nome":"Poder Interno","quantidade":0,"imagem":"images/1-5.png"},{"nome":"Escudo Primo","quantidade":0,"imagem":"images/5-3.png"},{"nome":"Chama Kármica","quantidade":0,"imagem":"images/7-1.png"}]},{"nivel":"2","imagem":"images/11-1.png","nome":"Flor do Pessegueiro","efeitos":["Dex +10"],"materiais":[{"nome":"Favor do Imperador","quantidade":0,"imagem":"images/2-5.png"},{"nome":"Pessegueiro","quantidade":0,"imagem":"images/6-3.png"},{"nome":"Sorriso da Flora","quantidade":0,"imagem":"images/4-3.png"}]},{"nivel":"2","imagem":"images/12-2.png","nome":"Estampido","efeitos":["Con +10"],"materiais":[{"nome":"Orgulho Paterno","quantidade":0,"imagem":"images/3-6.jpg"},{"nome":"Escudo Primo","quantidade":0,"imagem":"images/5-3.png"},{"nome":"Chama Kármica","quantidade":0,"imagem":"images/7-1.png"}]},{"nivel":"2","imagem":"images/13.png","nome":"Chamas Secretas","efeitos":["Int +10"],"materiais":[{"nome":"Poder Interno","quantidade":0,"imagem":"images/1-5.png"},{"nome":"Chama Kármica","quantidade":0,"imagem":"images/7-1.png"},{"nome":"Sorriso da Flora","quantidade":0,"imagem":"images/4-3.png"}]},{"nivel":"2","imagem":"images/14-1.png","nome":"Força Inigualável","efeitos":["For +7","Con +6"],"materiais":[{"nome":"Poder Interno","quantidade":0,"imagem":"images/1-5.png"},{"nome":"Orgulho Paterno","quantidade":0,"imagem":"images/3-6.jpg"},{"nome":"Escudo Primo","quantidade":0,"imagem":"images/5-3.png"}]},{"nivel":"2","imagem":"images/15-1.png","nome":"Chuva de Pétalas","efeitos":["Dex +7","Con +6"],"materiais":[{"nome":"Favor do Imperador","quantidade":0,"imagem":"images/2-5.png"},{"nome":"Orgulho Paterno","quantidade":0,"imagem":"images/3-6.jpg"},{"nome":"Pessegueiro","quantidade":0,"imagem":"images/6-3.png"}]},{"nivel":"2","imagem":"images/16.png","nome":"Lótus Vermelha","efeitos":["Int +7","Con +6"],"materiais":[{"nome":"Sorriso da Flora","quantidade":0,"imagem":"images/4-3.png"},{"nome":"Chama Kármica","quantidade":0,"imagem":"images/7-1.png"},{"nome":"Pessegueiro","quantidade":0,"imagem":"images/6-3.png"}]},{"nivel":"2","imagem":"images/17.png","nome":"Lobo da Guerra","efeitos":["Recup. HP +6","Exp +2%"],"materiais":[{"nome":"Escudo Primo","quantidade":0,"imagem":"images/5-3.png"},{"nome":"Chama Kármica","quantidade":0,"imagem":"images/7-1.png"},{"nome":"Rio de Sangue","quantidade":0,"imagem":"images/8-1.png"}]},{"nivel":"2","imagem":"images/18.png","nome":"Renascido das Chamas","efeitos":["Recup. MP +6","Exp +2%"],"materiais":[{"nome":"Sorriso da Flora","quantidade":0,"imagem":"images/4-3.png"},{"nome":"Chama Kármica","quantidade":0,"imagem":"images/7-1.png"},{"nome":"Lua na Noite em Chamas","quantidade":0,"imagem":"images/9-1.png"}]}]},{"titulo":"Aba III","items":[{"nivel":"3","imagem":"images/19.png","nome":"Portal do Yang","efeitos":["For +15"],"materiais":[{"nome":"Resiliência","quantidade":0,"imagem":"images/10-1.png"},{"nome":"Força Inigualável","quantidade":0,"imagem":"images/14-1.png"},{"nome":"Lótus Vermelha","quantidade":0,"imagem":"images/16.png"}]},{"nivel":"3","imagem":"images/20.jpg","nome":"Beleza sem Forma","efeitos":["Dex +15"],"materiais":[{"nome":"Flor do Pessegueiro","quantidade":0,"imagem":"images/11-1.png"},{"nome":"Força Inigualável","quantidade":0,"imagem":"images/14-1.png"},{"nome":"Chuva de Pétalas","quantidade":0,"imagem":"images/15-1.png"}]},{"nivel":"3","imagem":"images/21.png","nome":"Som do Arrependimento","efeitos":["Con +15"],"materiais":[{"nome":"Estampido","quantidade":0,"imagem":"images/12-2.png"},{"nome":"Força Inigualável","quantidade":0,"imagem":"images/14-1.png"},{"nome":"Lótus Vermelha","quantidade":0,"imagem":"images/16.png"}]},{"nivel":"3","imagem":"images/22.png","nome":"Coração Leal de Gelo","efeitos":["Int +15"],"materiais":[{"nome":"Resiliência","quantidade":0,"imagem":"images/10-1.png"},{"nome":"Flor do Pessegueiro","quantidade":0,"imagem":"images/11-1.png"},{"nome":"Chamas Secretas","quantidade":0,"imagem":"images/13.png"}]},{"nivel":"3","imagem":"images/23.png","nome":"Canção do Vinho","efeitos":["For +9","Con +8"],"materiais":[{"nome":"Estampido","quantidade":0,"imagem":"images/12-2.png"},{"nome":"Lótus Vermelha","quantidade":0,"imagem":"images/16.png"},{"nome":"Força Inigualável","quantidade":0,"imagem":"images/14-1.png"}]},{"nivel":"3","imagem":"images/24.png","nome":"Crepúsculo Eterno","efeitos":["Dex +9","Con +8"],"materiais":[{"nome":"Flor do Pessegueiro","quantidade":0,"imagem":"images/11-1.png"},{"nome":"Estampido","quantidade":0,"imagem":"images/12-2.png"},{"nome":"Chuva de Pétalas","quantidade":0,"imagem":"images/15-1.png"}]},{"nivel":"3","imagem":"images/25.png","nome":"Chama Rubra","efeitos":["Int +9","Con +8"],"materiais":[{"nome":"Chamas Secretas","quantidade":0,"imagem":"images/13.png"},{"nome":"Chuva de Pétalas","quantidade":0,"imagem":"images/15-1.png"},{"nome":"Lótus Vermelha","quantidade":0,"imagem":"images/16.png"}]},{"nivel":"3","imagem":"images/26.png","nome":"Aniquilação","efeitos":["Recup. HP +9","Exp +3%"],"materiais":[{"nome":"Resiliência","quantidade":0,"imagem":"images/10-1.png"},{"nome":"Chuva de Pétalas","quantidade":0,"imagem":"images/15-1.png"},{"nome":"Lobo da Guerra","quantidade":0,"imagem":"images/17.png"}]},{"nivel":"3","imagem":"images/27.png","nome":"Fragrância da Chuva de Sangue","efeitos":["Recup. MP +9","Exp +3%"],"materiais":[{"nome":"Chuva de Pétalas","quantidade":0,"imagem":"images/15-1.png"},{"nome":"Lótus Vermelha","quantidade":0,"imagem":"images/16.png"},{"nome":"Renascido das Chamas","quantidade":0,"imagem":"images/18.png"}]}]},{"titulo":"Aba IV","items":[{"nivel":"4","imagem":"images/28.png","nome":"Destino","efeitos":["For +20"],"materiais":[{"nome":"Portal do Yang","quantidade":0,"imagem":"images/19.png"},{"nome":"Beleza sem Forma","quantidade":0,"imagem":"images/20.jpg"},{"nome":"Canção do Vinho","quantidade":0,"imagem":"images/23.png"}]},{"nivel":"4","imagem":"images/29.png","nome":"Espinhos de Rosa","efeitos":["Dex +20"],"materiais":[{"nome":"Beleza sem Forma","quantidade":0,"imagem":"images/20.jpg"},{"nome":"Chama Rubra","quantidade":0,"imagem":"images/25.png"},{"nome":"Crepúsculo Eterno","quantidade":0,"imagem":"images/24.png"}]},{"nivel":"4","imagem":"images/30.png","nome":"Anarquia","efeitos":["Con +20"],"materiais":[{"nome":"Som do Arrependimento","quantidade":0,"imagem":"images/21.png"},{"nome":"Canção do Vinho","quantidade":0,"imagem":"images/23.png"},{"nome":"Coração Leal de Gelo","quantidade":0,"imagem":"images/22.png"}]},{"nivel":"4","imagem":"images/31.png","nome":"Tocado Pelo Vento da Primavera","efeitos":["Int +20"],"materiais":[{"nome":"Som do Arrependimento","quantidade":0,"imagem":"images/21.png"},{"nome":"Chama Rubra","quantidade":0,"imagem":"images/25.png"},{"nome":"Coração Leal de Gelo","quantidade":0,"imagem":"images/22.png"}]},{"nivel":"4","imagem":"images/32.png","nome":"Tigre do Vento, Dragão do Céu","efeitos":["For +13","Con +12"],"materiais":[{"nome":"Portal do Yang","quantidade":0,"imagem":"images/19.png"},{"nome":"Crepúsculo Eterno","quantidade":0,"imagem":"images/24.png"},{"nome":"Canção do Vinho","quantidade":0,"imagem":"images/23.png"}]},{"nivel":"4","imagem":"images/33.png","nome":"Encantador de Almas","efeitos":["Dex +13","Con +12"],"materiais":[{"nome":"Beleza sem Forma","quantidade":0,"imagem":"images/20.jpg"},{"nome":"Chama Rubra","quantidade":0,"imagem":"images/25.png"},{"nome":"Crepúsculo Eterno","quantidade":0,"imagem":"images/24.png"}]},{"nivel":"4","imagem":"images/34.png","nome":"Paixão","efeitos":["Int +13","Con +12"],"materiais":[{"nome":"Coração Leal de Gelo","quantidade":0,"imagem":"images/22.png"},{"nome":"Portal do Yang","quantidade":0,"imagem":"images/19.png"},{"nome":"Chama Rubra","quantidade":0,"imagem":"images/25.png"}]},{"nivel":"4","imagem":"images/35.png","nome":"Ao Sul dos Rios","efeitos":["Recup. HP +12","Exp +4%"],"materiais":[{"nome":"Chamas Secretas","quantidade":0,"imagem":"images/13.png"},{"nome":"Flor do Pessegueiro","quantidade":0,"imagem":"images/11-1.png"},{"nome":"Aniquilação","quantidade":0,"imagem":"images/26.png"}]},{"nivel":"4","imagem":"images/36.png","nome":"Céu Que Chora","efeitos":["Recup. MP +12","Exp +4%"],"materiais":[{"nome":"Som do Arrependimento","quantidade":0,"imagem":"images/21.png"},{"nome":"Crepúsculo Eterno","quantidade":0,"imagem":"images/24.png"},{"nome":"Fragrância da Chuva de Sangue","quantidade":0,"imagem":"images/27.png"}]}]},{"titulo":"Aba V","items":[{"nivel":"5","imagem":"images/37.png","nome":"Beleza da Serpente","efeitos":["For +20","Mov. +0.1m/s"],"materiais":[{"nome":"Destino","quantidade":0,"imagem":"images/28.png"},{"nome":"Anarquia","quantidade":0,"imagem":"images/30.png"},{"nome":"Encantador de Almas","quantidade":0,"imagem":"images/33.png"}]},{"nivel":"5","imagem":"images/38.png","nome":"Os Quatro Grande Elementos","efeitos":["For +20","Crítico +1%"],"materiais":[{"nome":"Destino","quantidade":0,"imagem":"images/28.png"},{"nome":"Anarquia","quantidade":0,"imagem":"images/30.png"},{"nome":"Tigre do Vento, Dragão do Céu","quantidade":0,"imagem":"images/32.png"}]},{"nivel":"5","imagem":"images/39.png","nome":"Partindo os Céus e a Terra","efeitos":["Dex +25"],"materiais":[{"nome":"Espinho de Rosa","quantidade":0,"imagem":"images/29.png"},{"nome":"Anarquia","quantidade":0,"imagem":"images/30.png"},{"nome":"Encantador de Almas","quantidade":0,"imagem":"images/33.png"}]},{"nivel":"5","imagem":"images/40.png","nome":"Cidade Estrangeira","efeitos":["Dex +20","Crítico +1%"],"materiais":[{"nome":"Destino","quantidade":0,"imagem":"images/28.png"},{"nome":"Espinho de Rosa","quantidade":0,"imagem":"images/29.png"},{"nome":"Encantador de Almas","quantidade":0,"imagem":"images/33.png"}]},{"nivel":"5","imagem":"images/41.png","nome":"Risada da Loucura","efeitos":["Con +25"],"materiais":[{"nome":"Tigre do Vento, Dragão do Céu","quantidade":0,"imagem":"images/32.png"},{"nome":"Anarquia","quantidade":0,"imagem":"images/30.png"},{"nome":"Paixão","quantidade":0,"imagem":"images/34.png"}]},{"nivel":"5","imagem":"images/42.png","nome":"Bênçãos da Terra","efeitos":["Con +20","Red. Dano Físico +3%"],"materiais":[{"nome":"Tigre do Vento, Dragão do Céu","quantidade":0,"imagem":"images/32.png"},{"nome":"Anarquia","quantidade":0,"imagem":"images/30.png"},{"nome":"Paixão","quantidade":0,"imagem":"images/34.png"}]},{"nivel":"5","imagem":"images/43.png","nome":"Uivo do Mar","efeitos":["Int +20","Mov. +0.1m/s"],"materiais":[{"nome":"Espinho de Rosa","quantidade":0,"imagem":"images/29.png"},{"nome":"Tocado Pelo Vento da Primavera","quantidade":0,"imagem":"images/31.png"},{"nome":"Encantador de Almas","quantidade":0,"imagem":"images/33.png"}]},{"nivel":"5","imagem":"images/44.png","nome":"Água Gentil","efeitos":["Int +20","Crítico +1%"],"materiais":[{"nome":"Paixão","quantidade":0,"imagem":"images/34.png"},{"nome":"Tocado Pelo Vento da Primavera","quantidade":0,"imagem":"images/31.png"},{"nome":"Tigre do Vento, Dragão do Céu","quantidade":0,"imagem":"images/32.png"}]},{"nivel":"5","imagem":"images/45.png","nome":"Arrogância","efeitos":["For +13","Con +12","HP +70"],"materiais":[{"nome":"Destino","quantidade":0,"imagem":"images/28.png"},{"nome":"Anarquia","quantidade":0,"imagem":"images/30.png"},{"nome":"Tigre do Vento, Dragão do Céu","quantidade":0,"imagem":"images/32.png"}]},{"nivel":"5","imagem":"images/46.png","nome":"Disfarce de Sangue","efeitos":["For +13","Con +12","Crítico +1%"],"materiais":[{"nome":"Destino","quantidade":0,"imagem":"images/28.png"},{"nome":"Anarquia","quantidade":0,"imagem":"images/30.png"},{"nome":"Tigre do Vento, Dragão do Céu","quantidade":0,"imagem":"images/32.png"}]},{"nivel":"5","imagem":"images/47.png","nome":"Júpiter","efeitos":["Dex +13","Con +12","Mov. +0.1m/s"],"materiais":[{"nome":"Espinho de Rosa","quantidade":0,"imagem":"images/29.png"},{"nome":"Anarquia","quantidade":0,"imagem":"images/30.png"},{"nome":"Encantador de Almas","quantidade":0,"imagem":"images/33.png"}]},{"nivel":"5","imagem":"images/48.png","nome":"Floresta Vasta","efeitos":["Dex +13","Con +12","Crítico +1%"],"materiais":[{"nome":"Espinho de Rosa","quantidade":0,"imagem":"images/29.png"},{"nome":"Anarquia","quantidade":0,"imagem":"images/30.png"},{"nome":"Encantador de Almas","quantidade":0,"imagem":"images/33.png"}]},{"nivel":"5","imagem":"images/49.png","nome":"Fonte do Deserto","efeitos":["Int +13","Con +12","Mov. +0.1m/s"],"materiais":[{"nome":"Espinho de Rosa","quantidade":0,"imagem":"images/29.png"},{"nome":"Paixão","quantidade":0,"imagem":"images/34.png"},{"nome":"Tocado Pelo Vento da Primavera","quantidade":0,"imagem":"images/31.png"}]},{"nivel":"5","imagem":"images/50.png","nome":"Fragrância dos Céus","efeitos":["Int +13","Con +12","Tempo de Invoc. -1%"],"materiais":[{"nome":"Céu Que Chora","quantidade":0,"imagem":"images/36.png"},{"nome":"Paixão","quantidade":0,"imagem":"images/34.png"},{"nome":"Tocado Pelo Vento da Primavera","quantidade":0,"imagem":"images/31.png"}]},{"nivel":"5","imagem":"images/51.png","nome":"Os Treze Guardiões","efeitos":["For +9","Dex +9","Con +8","Int +9","HP +70"],"materiais":[{"nome":"Paixão","quantidade":0,"imagem":"images/34.png"},{"nome":"Ao Sul dos Rios","quantidade":0,"imagem":"images/35.png"},{"nome":"Céu Que Chora","quantidade":0,"imagem":"images/36.png"}]},{"nivel":"5","imagem":"images/52.png","nome":"Espelho do Nada","efeitos":["For +9","Dex +9","Con +8","Int +9","Crítico +1"],"materiais":[{"nome":"Paixão","quantidade":0,"imagem":"images/34.png"},{"nome":"Ao Sul dos Rios","quantidade":0,"imagem":"images/35.png"},{"nome":"Céu Que Chora","quantidade":0,"imagem":"images/36.png"}]}]},{"titulo":"Aba VI","items":[{"nivel":"5","imagem":"images/44.png","nome":"Água Gentil","efeitos":["Int +20","Crítico +1%"],"materiais":[{"nome":"Manuscrito do Destino","quantidade":0,"imagem":"images/ManuscritoDoDestino.jpg"}]},{"nivel":"5","imagem":"images/43.png","nome":"Uivo do Mar","efeitos":["Int +20","Mov. +0.1m/s"],"materiais":[{"nome":"Manuscrito do Destino","quantidade":0,"imagem":"images/ManuscritoDoDestino.jpg"}]},{"nivel":"5","imagem":"images/41.png","nome":"Risada da Loucura","efeitos":["Con +25"],"materiais":[{"nome":"Manuscrito do Destino","quantidade":0,"imagem":"images/ManuscritoDoDestino.jpg"}]},{"nivel":"5","imagem":"images/42.png","nome":"Bênçãos da Terra","efeitos":["Con +20","Red. Dano Físico +3%"],"materiais":[{"nome":"Manuscrito do Destino","quantidade":0,"imagem":"images/ManuscritoDoDestino.jpg"}]},{"nivel":"7","imagem":"images/cantodanoite.gif","nome":"Canto da Noite","efeitos":["For +13","Dex +13","Con +12","Int +13","Critico +1%","Tempo de Invoc. -1%","Vel. de Ataque -0,05"],"materiais":[{"nome":"Pergaminho dos deuses","quantidade":0,"imagem":"images/pergaminhodosdeuses-1.gif"}]},{"nivel":"7","imagem":"images/trompetedeferro.gif","nome":"Trompete de Ferro","efeitos":["Int +45"],"materiais":[{"nome":"Pergaminho dos deuses","quantidade":0,"imagem":"images/pergaminhodosdeuses-1.gif"}]},{"nivel":"7","imagem":"images/cantodedragdaagua.gif","nome":"Canto de Dragão da Água","efeitos":["Con +45"],"materiais":[{"nome":"Pergaminho dos deuses","quantidade":0,"imagem":"images/pergaminhodosdeuses-1.gif"}]},{"nivel":"7","imagem":"images/livrodivinovermelho.gif","nome":"Uma Bela Flor","efeitos":["Dex +25","Mov. +0,2m/s"],"materiais":[{"nome":"Pergaminho dos deuses","quantidade":0,"imagem":"images/pergaminhodosdeuses-1.gif"}]},{"nivel":"7","imagem":"images/DeusEriang.gif","nome":"Deus Eriang","efeitos":["Dex +25","Critico +2%"],"materiais":[{"nome":"Pergaminho dos deuses","quantidade":0,"imagem":"images/pergaminhodosdeuses-1.gif"}]},{"nivel":"7","imagem":"images/livrodivinoverde.gif","nome":"Três Estudiosos","efeitos":["For +45"],"materiais":[{"nome":"Pergaminho dos deuses","quantidade":0,"imagem":"images/pergaminhodosdeuses-1.gif"}]}]},{"titulo":"Aba VII","items":[{"nivel":"6","imagem":"images/geloestrangeiro.jpg","nome":"Gelo Estrangeiro","efeitos":["Int+35"],"materiais":[{"nome":"Água Gentil","quantidade":0,"imagem":"images/44.png"},{"nome":"Uivo do Mar","quantidade":0,"imagem":"images/43.png"},{"nome":"Fonte do deserto","quantidade":0,"imagem":"images/49.png"}]},{"nivel":"6","imagem":"images/hadesdonorte.jpg","nome":"Hades do Norte","efeitos":["Int+20 Mov.+0.2m/s"],"materiais":[{"nome":"Uivo do Mar","quantidade":0,"imagem":"images/43.png"},{"nome":"Risada de Loucura","quantidade":0,"imagem":"images/41.png"},{"nome":"Partindo os Céus e a Terra","quantidade":0,"imagem":"images/39.png"}]},{"nivel":"6","imagem":"images/lagrimavermelha.jpg","nome":"Lágrima Vermelha","efeitos":["Con+20","Red. de Dano Físico 6%"],"materiais":[{"nome":"Risada de Loucura","quantidade":0,"imagem":"images/41.png"},{"nome":"Bênçãos da Terra","quantidade":0,"imagem":"images/42.png"},{"nome":"Os Quatro Grande Elementos","quantidade":0,"imagem":"images/38.png"}]},{"nivel":"6","imagem":"images/aguaqueperfuraapedra.jpg","nome":"Água que Perfura a Pedra","efeitos":["Con +20","Crítico +2%"],"materiais":[{"nome":"Água Gentil","quantidade":0,"imagem":"images/44.png"},{"nome":"Risada de Loucura","quantidade":0,"imagem":"images/41.png"},{"nome":"Os Quatro Grande Elementos","quantidade":0,"imagem":"images/38.png"}]},{"nivel":"6","imagem":"images/ventodamanha.jpg","nome":"Vento da Manhã","efeitos":["Dex +35"],"materiais":[{"nome":"Partindo os Céus e a Terra","quantidade":0,"imagem":"images/39.png"},{"nome":"Fonte do Deserto","quantidade":0,"imagem":"images/49.png"},{"nome":"Floresta Vasta","quantidade":0,"imagem":"images/48.png"}]},{"nivel":"6","imagem":"images/passarriocompalha.jpg","nome":"Passar Rio Com Palha","efeitos":["Dex +20","Mov. +0.2m/s"],"materiais":[{"nome":"Partindo os Céus e a Terra","quantidade":0,"imagem":"images/39.png"},{"nome":"Cidade Estrangeira","quantidade":0,"imagem":"images/40.png"},{"nome":"Beleza da Serpente","quantidade":0,"imagem":"images/37.png"}]},{"nivel":"6","imagem":"images/seguraraondaf.jpg","nome":"Segurar a Onda","efeitos":["For+35"],"materiais":[{"nome":"Beleza da Serpente","quantidade":0,"imagem":"images/37.png"},{"nome":"Arrogância","quantidade":0,"imagem":"images/45.png"},{"nome":"Disfarce de Sangue","quantidade":0,"imagem":"images/46.png"}]},{"nivel":"6","imagem":"images/coracaofurioso.jpg","nome":"Coração Furioso","efeitos":["For +20","Crítico +2%"],"materiais":[{"nome":"Cidade Estrangeira","quantidade":0,"imagem":"images/40.png"},{"nome":"Os Quatro Grande Elementos","quantidade":0,"imagem":"images/38.png"},{"nome":"Disfarce de Sangue","quantidade":0,"imagem":"images/46.png"}]},{"nivel":"6","imagem":"images/ritmodasondas.jpg","nome":"Ritmo das Ondas","efeitos":["Int +13","Con +12","Tempo de Inv.-2%"],"materiais":[{"nome":"Água Gentil","quantidade":0,"imagem":"images/44.png"},{"nome":"Partindo os Céus e a Terra","quantidade":0,"imagem":"images/39.png"},{"nome":"Frangância dos Céus","quantidade":0,"imagem":"images/50.png"}]},{"nivel":"6","imagem":"images/tresflores.jpg","nome":"Três Flores","efeitos":["Int +13","Con +12","Crítico +2%"],"materiais":[{"nome":"Água Gentil","quantidade":0,"imagem":"images/44.png"},{"nome":"Cidade Estrangeira","quantidade":0,"imagem":"images/40.png"},{"nome":"Frangância dos Céus","quantidade":0,"imagem":"images/50.png"}]},{"nivel":"6","imagem":"images/asaunificadora.jpg","nome":"Asa Unificadora","efeitos":["Dex +13","Con +12","Mov. +0.2m/s"],"materiais":[{"nome":"Partindo os Céus e a Terra","quantidade":0,"imagem":"images/39.png"},{"nome":"Fonte do Deserto","quantidade":0,"imagem":"images/49.png"},{"nome":"Júpiter","quantidade":0,"imagem":"images/47.png"}]},{"nivel":"6","imagem":"images/zendeesquecimento.jpg","nome":"Zen de Esquecimento","efeitos":["Dex +13","Con +12","HP +140"],"materiais":[{"nome":"Risada de Loucura","quantidade":0,"imagem":"images/41.png"},{"nome":"Júpiter","quantidade":0,"imagem":"images/47.png"},{"nome":"Arrogância","quantidade":0,"imagem":"images/45.png"}]},{"nivel":"6","imagem":"images/mudancadoceuedaterra.jpg","nome":"Mudança do Céu e da Terra","efeitos":["For +13","Con +12","Red. de Dano Físico +6%"],"materiais":[{"nome":"Beleza da Serpente","quantidade":0,"imagem":"images/37.png"},{"nome":"Arrogância","quantidade":0,"imagem":"images/45.png"},{"nome":"Disfarce de Sangue","quantidade":0,"imagem":"images/46.png"}]},{"nivel":"6","imagem":"images/sorrisodarainha.jpg","nome":"Sorriso da Rainha","efeitos":["For +13","Con +12","Crítico +2%"],"materiais":[{"nome":"Floresta Vasta","quantidade":0,"imagem":"images/48.png"},{"nome":"Arrogância","quantidade":0,"imagem":"images/45.png"},{"nome":"Disfarce de Sangue","quantidade":0,"imagem":"images/46.png"}]},{"nivel":"6","imagem":"images/dezoitoestudiosos.jpg","nome":"Dezoito Estudiosos","efeitos":["For +9","Dex +9","Con +8","Int +9","HP +70","MP+80"],"materiais":[{"nome":"Água Gentil","quantidade":0,"imagem":"images/44.png"},{"nome":"Beleza da Serpente","quantidade":0,"imagem":"images/37.png"},{"nome":"Os Treze Guardiões","quantidade":0,"imagem":"images/51.png"}]},{"nivel":"6","imagem":"images/pangu.jpg","nome":"Pan gu","efeitos":["For +9","Dex +9","Con +8","Int +9","Crítico +1","Redução de Inv. -1%","Vel. de Ataque -0.05"],"materiais":[{"nome":"Disfarce de Sangue","quantidade":0,"imagem":"images/46.png"},{"nome":"Os Treze Guardiões","quantidade":0,"imagem":"images/51.png"},{"nome":"Espelho do Nada","quantidade":0,"imagem":"images/52.png"}]}]}];
+
+// Build flat list of all unique books
+const allBooks = [];
+const bookMap = {};
+DATA.forEach(tab => {
+  tab.items.forEach(item => {
+    const key = item.nome + '|' + item.nivel;
+    if (!bookMap[key]) {
+      bookMap[key] = true;
+      allBooks.push({ ...item, tab: tab.titulo });
+    }
+  });
+});
+
+// State
+let owned = JSON.parse(localStorage.getItem('pw_owned') || '[]');
+let activeTab = 'Aba I';
+let searchQ = '';
+let statFilter = '';
+let ownedFilterMode = 'all';
+let modalBook = null;
+
+// Tabs
+const tabs = DATA.filter(d => d.items.length > 0);
+
+function saveOwned() {
+  localStorage.setItem('pw_owned', JSON.stringify(owned));
+}
+
+function isOwned(nome) {
+  return owned.includes(nome);
+}
+
+function toggleOwned(nome) {
+  if (isOwned(nome)) {
+    owned = owned.filter(n => n !== nome);
+  } else {
+    owned.push(nome);
+  }
+  saveOwned();
+  renderAll();
+}
+
+// Render tabs
+function renderTabs() {
+  const row = document.getElementById('tabsRow');
+  row.innerHTML = '';
+  tabs.forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (t.titulo === activeTab ? ' active' : '');
+    btn.textContent = t.titulo;
+    btn.onclick = () => { activeTab = t.titulo; renderAll(); };
+    row.appendChild(btn);
+  });
+}
+
+// Filter books for current tab
+function getFilteredBooks() {
+  const tab = DATA.find(d => d.titulo === activeTab);
+  if (!tab) return [];
+  return tab.items.filter(item => {
+    const matchSearch = !searchQ || item.nome.toLowerCase().includes(searchQ.toLowerCase());
+    const matchStat = !statFilter || item.efeitos.some(e => e.includes(statFilter));
+    const matchOwned = ownedFilterMode === 'all' ||
+      (ownedFilterMode === 'owned' && isOwned(item.nome)) ||
+      (ownedFilterMode === 'missing' && !isOwned(item.nome));
+    return matchSearch && matchStat && matchOwned;
+  });
+}
+
+// Render grid
+function renderGrid() {
+  const grid = document.getElementById('booksGrid');
+  const books = getFilteredBooks();
+  grid.innerHTML = '';
+
+  if (!books.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">📖</div><p>Nenhum livro encontrado.</p></div>';
+    return;
+  }
+
+  books.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'book-card' + (isOwned(item.nome) ? ' owned' : '');
+
+    const matImgs = item.materiais.slice(0, 4).map(m => {
+      if (m.imagem) return `<img class="mat-thumb" src="${m.imagem}" alt="${m.nome}" title="${m.nome}">`;
+      return `<span class="mat-thumb-placeholder">?</span>`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="card-top">
+        <div class="card-img-wrap"><img src="${item.imagem || ''}" alt="${item.nome}" onerror="this.style.opacity=0.3"></div>
+        <div class="card-info">
+          <div class="card-name">${item.nome}</div>
+          <span class="card-level">Nível ${item.nivel}</span>
+        </div>
+      </div>
+      <div class="card-effects">${item.efeitos.map(e => `<span class="effect-tag">${e}</span>`).join('')}</div>
+      <div class="card-mats">${matImgs}</div>
+      <button class="toggle-owned-btn">${isOwned(item.nome) ? '✓ Obtido' : '+ Marcar como Obtido'}</button>
+    `;
+
+    card.querySelector('.toggle-owned-btn').onclick = (e) => {
+      e.stopPropagation();
+      toggleOwned(item.nome);
+    };
+
+    card.onclick = () => openModal(item);
+    grid.appendChild(card);
+  });
+}
+
+// Owned sidebar
+function renderOwnedSidebar() {
+  const list = document.getElementById('ownedList');
+  const ownedBooks = allBooks.filter(b => isOwned(b.nome));
+
+  if (!ownedBooks.length) {
+    list.innerHTML = '<div class="empty-owned">Nenhum livro obtido ainda.</div>';
+    return;
+  }
+
+  list.innerHTML = ownedBooks.map(b => `
+    <div class="owned-item" onclick="jumpToBook('${b.nome}','${b.tab}')">
+      <img src="${b.imagem || ''}" alt="${b.nome}" onerror="this.style.opacity=0.2">
+      <span class="owned-item-name">${b.nome}</span>
+      <span class="owned-item-lvl">Nv${b.nivel}</span>
+    </div>
+  `).join('');
+}
+
+function jumpToBook(nome, tab) {
+  activeTab = tab;
+  renderAll();
+}
+
+// Materials needed for owned books' next tier
+function renderMaterials() {
+  const matsDiv = document.getElementById('materialsNeeded');
+  const matsList = document.getElementById('matsList');
+  if (!owned.length) { matsDiv.style.display = 'none'; return; }
+
+  // Collect all materials needed for owned books
+  const matCount = {};
+  const matImg = {};
+  owned.forEach(ownedName => {
+    const book = allBooks.find(b => b.nome === ownedName);
+    if (!book) return;
+    book.materiais.forEach(m => {
+      if (!m.imagem) return; // skip basic mats from aba1
+      matCount[m.nome] = (matCount[m.nome] || 0) + (m.quantidade || 1);
+      matImg[m.nome] = m.imagem;
+    });
+  });
+
+  const entries = Object.entries(matCount);
+  if (!entries.length) { matsDiv.style.display = 'none'; return; }
+
+  matsDiv.style.display = 'block';
+  matsList.innerHTML = entries.map(([nome, qty]) => `
+    <div class="mat-item">
+      <img src="${matImg[nome]}" alt="${nome}" onerror="this.style.opacity=0.2">
+      <span>${nome}</span>
+      <span class="mat-item-qty">${qty}x</span>
+    </div>
+  `).join('');
+}
+
+// Stats bar
+function updateStats() {
+  const allItems = DATA.flatMap(d => d.items);
+  const unique = [...new Set(allItems.map(i => i.nome))];
+  document.getElementById('totalCount').textContent = unique.length;
+  document.getElementById('ownedCount').textContent = owned.length;
+  document.getElementById('visibleCount').textContent = getFilteredBooks().length;
+}
+
+// Modal
+function openModal(item) {
+  modalBook = item;
+  document.getElementById('modalImg').src = item.imagem || '';
+  document.getElementById('modalName').textContent = item.nome;
+  document.getElementById('modalLevel').textContent = 'Nível ' + item.nivel;
+  document.getElementById('modalEffects').innerHTML = item.efeitos.map(e => `<span class="modal-effect-tag">${e}</span>`).join('');
+
+  const mats = document.getElementById('modalMats');
+  mats.innerHTML = item.materiais.map(m => `
+    <div class="modal-mat-row">
+      ${m.imagem ? `<img src="${m.imagem}" alt="${m.nome}">` : ''}
+      <span class="modal-mat-name">${m.nome}</span>
+      ${m.quantidade ? `<span class="modal-mat-qty">${m.quantidade}x</span>` : ''}
+    </div>
+  `).join('');
+
+  const btn = document.getElementById('modalToggleBtn');
+  btn.textContent = isOwned(item.nome) ? '✓ Remover dos Obtidos' : '+ Marcar como Obtido';
+  btn.className = 'modal-toggle-btn' + (isOwned(item.nome) ? ' owned-state' : '');
+  btn.onclick = () => {
+    toggleOwned(item.nome);
+    openModal(item); // refresh
+  };
+
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+document.getElementById('modalClose').onclick = () => {
+  document.getElementById('modalOverlay').classList.remove('open');
+};
+document.getElementById('modalOverlay').onclick = (e) => {
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+};
+
+// Filters
+document.getElementById('searchInput').oninput = (e) => {
+  searchQ = e.target.value;
+  renderAll();
+};
+
+document.getElementById('statFilter').onchange = (e) => {
+  statFilter = e.target.value;
+  renderAll();
+};
+
+document.querySelectorAll('#ownedFilter .pill').forEach(p => {
+  p.onclick = () => {
+    document.querySelectorAll('#ownedFilter .pill').forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+    ownedFilterMode = p.dataset.filter;
+    renderAll();
+  };
+});
+
+document.getElementById('clearAll').onclick = () => {
+  if (confirm('Limpar todos os livros obtidos?')) {
+    owned = [];
+    saveOwned();
+    renderAll();
+  }
+};
+
+function renderAll() {
+  renderTabs();
+  renderGrid();
+  renderOwnedSidebar();
+  renderMaterials();
+  updateStats();
+}
+
+renderAll();
+</script>
+</body>
+</html>
