@@ -412,7 +412,7 @@ function buildTreeNodeHtml(bookName, qty, path) {
   }
   
   const isNodeOwned = isSpecOwned || isGlobOwned;
-  const ownedClass = isNodeOwned && book ? ' owned' : '';
+  const ownedClass = isNodeOwned ? ' owned' : '';
   const dataAttr = `data-name="${nameLabel}" data-path="${path}" data-spec="${isSpecOwned}" data-glob="${isGlobOwned}"`;
   
   let html = `<div class="tree-node-wrapper">`;
@@ -450,12 +450,27 @@ function bindTreeEvents() {
       const isGlob = node.dataset.glob === 'true';
       
       if (isSpec) {
-        owned = owned.filter(x => x !== specificKey);
+        owned = owned.filter(x => x !== specificKey && !x.startsWith('@' + path + '-'));
       } else if (isGlob) {
         const idx = owned.indexOf(name);
         if (idx > -1) owned.splice(idx, 1);
+        owned = owned.filter(x => !x.startsWith('@' + path + '-'));
       } else {
-        owned.push(specificKey);
+        const keysToAdd = [];
+        function collect(bName, currentPath) {
+           keysToAdd.push('@' + currentPath + '|' + bName);
+           const bookNode = allBooks.find(bk => bk.nome === bName);
+           if (!bookNode || !bookNode.materiais) return;
+           bookNode.materiais.forEach((m, idx) => {
+             collect(m.nome, currentPath + '-' + idx);
+           });
+        }
+        collect(name, path);
+        keysToAdd.forEach(k => {
+           if (!owned.includes(k)) {
+             owned.push(k);
+           }
+        });
       }
       
       saveOwned();
