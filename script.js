@@ -1,12 +1,20 @@
-// Build flat list of all unique books
+// Build flat list of all unique books and a material image map
 const allBooks = [];
 const bookMap = {};
+const materialImageMap = {};
+
 DATA.forEach(tab => {
   tab.items.forEach(item => {
     const key = item.nome + '|' + item.nivel;
     if (!bookMap[key]) {
       bookMap[key] = true;
       allBooks.push({ ...item, tab: tab.titulo });
+    }
+    // Gather material images
+    if (item.materiais) {
+      item.materiais.forEach(m => {
+        if (m.imagem) materialImageMap[m.nome] = m.imagem;
+      });
     }
   });
 });
@@ -438,7 +446,7 @@ document.getElementById('treeClose').onclick = () => {
 function buildTreeNodeHtml(bookName, qty, path) {
   const book = allBooks.find(b => b.nome === bookName);
   const isBaseMat = !book;
-  const imgUrl = book ? book.imagem : 'images/fragmentodeescritadivina.jpg';
+  const imgUrl = book ? book.imagem : (materialImageMap[bookName] || 'images/fragmentodeescritadivina.jpg');
   const nameLabel = book ? book.nome : bookName;
   
   const specificKey = '@' + path + '|' + nameLabel;
@@ -589,7 +597,7 @@ function renderCraftList(rootBookName) {
         name: bName,
         totalNodes: 0,
         ownedNodes: 0,
-        image: bObj ? bObj.imagem : 'images/fragmentodeescritadivina.jpg',
+        image: bObj ? bObj.imagem : (materialImageMap[bName] || 'images/fragmentodeescritadivina.jpg'),
         level: bObj ? bObj.nivel : 0,
         isBase: !bObj
       };
