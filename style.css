@@ -716,21 +716,21 @@ header p {
 /* TREE NODES */
 .craft-tree { display: flex; flex-direction: column; align-items: center; margin: 0 auto; min-width: max-content; }
 .tree-node-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; }
-.tree-node { background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(13,11,8,0.9) 100%); border: 1px solid rgba(201,168,76,0.3); border-radius: 6px; padding: 0.6rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; cursor: pointer; transition: all 0.2s; width: 140px; text-align: center; position: relative; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+.tree-node { background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(13,11,8,0.9) 100%); border: 1px solid rgba(201,168,76,0.3); border-radius: 4px; padding: 0.3rem 0.3rem; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; cursor: pointer; transition: all 0.2s; width: 85px; text-align: center; position: relative; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 .tree-node:hover { border-color: var(--gold); transform: translateY(-2px); }
 .tree-node.owned { border-color: var(--gold); background: linear-gradient(135deg, rgba(201,168,76,0.2) 0%, rgba(13,11,8,0.9) 100%); box-shadow: 0 0 15px rgba(201,168,76,0.2); }
-.tree-node.owned::after { content: '✓'; position: absolute; top: -8px; right: -8px; background: var(--gold); color: var(--ink); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; border: 2px solid var(--ink); }
-.tree-node img { width: 36px; height: 36px; object-fit: contain; }
-.tree-node-name { font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--parchment); line-height: 1.2; word-wrap: break-word; }
-.tree-node-qty { font-size: 0.65rem; color: rgba(201,168,76,0.6); background: rgba(201,168,76,0.1); padding: 0.1rem 0.3rem; border-radius: 2px; }
+.tree-node.owned::after { content: '✓'; position: absolute; top: -6px; right: -6px; background: var(--gold); color: var(--ink); width: 14px; height: 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.5rem; font-weight: bold; border: 2px solid var(--ink); }
+.tree-node img { width: 24px; height: 24px; object-fit: contain; }
+.tree-node-name { font-family: 'Cinzel', serif; font-size: 0.5rem; color: var(--parchment); line-height: 1.1; word-wrap: break-word; }
+.tree-node-qty { font-size: 0.5rem; color: rgba(201,168,76,0.6); background: rgba(201,168,76,0.1); padding: 0.1rem 0.2rem; border-radius: 2px; }
 
-.tree-children { display: flex; gap: 1.5rem; padding-top: 1.5rem; position: relative; }
-.tree-children::before { content: ''; position: absolute; top: 0; left: 50%; width: 1px; height: 1.5rem; background: rgba(201,168,76,0.3); transform: translateX(-50%); }
+.tree-children { display: flex; gap: 0.3rem; padding-top: 1rem; position: relative; }
+.tree-children::before { content: ''; position: absolute; top: 0; left: 50%; width: 1px; height: 1rem; background: rgba(201,168,76,0.3); transform: translateX(-50%); }
 
 /* Connector lines between siblings */
 .tree-child-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
-.tree-child-wrapper::before { content: ''; position: absolute; top: -1.5rem; left: 50%; width: 1px; height: 1.5rem; background: rgba(201,168,76,0.3); transform: translateX(-50%); }
-.tree-child-wrapper::after { content: ''; position: absolute; top: -1.5rem; width: 100%; height: 1px; background: rgba(201,168,76,0.3); }
+.tree-child-wrapper::before { content: ''; position: absolute; top: -1rem; left: 50%; width: 1px; height: 1rem; background: rgba(201,168,76,0.3); transform: translateX(-50%); }
+.tree-child-wrapper::after { content: ''; position: absolute; top: -1rem; width: 100%; height: 1px; background: rgba(201,168,76,0.3); }
 .tree-child-wrapper:first-child::after { left: 50%; width: 50%; }
 .tree-child-wrapper:last-child::after { right: 50%; width: 50%; left: auto; }
 .tree-child-wrapper:only-child::after { display: none; }
