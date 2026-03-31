@@ -134,7 +134,13 @@
 <div class="tree-overlay" id="treeOverlay">
   <div class="tree-header">
     <div class="tree-title"><img id="treeTitleImg" src="" alt="icon"> <span id="treeTitleName">Árvore de Criação</span></div>
-    <button class="tree-close" id="treeClose">✕ Fechar Árvore</button>
+    <div class="tree-header-actions">
+      <div class="view-toggles">
+        <button class="view-toggle-btn active" id="btnViewTree" title="Ver como Árvore">🌳 Árvore</button>
+        <button class="view-toggle-btn" id="btnViewList" title="Ver como Lista Quantitativa">📝 Lista</button>
+      </div>
+      <button class="tree-close" id="treeClose" title="Fechar">✕ Fechar</button>
+    </div>
   </div>
   <div class="tree-content" id="treeContent">
     <div class="cost-panel" id="treeCostPanel">
@@ -143,6 +149,7 @@
       <div class="progress-container" style="margin-top: 1.5rem;"><div class="progress-bar" id="treeProgressBar" style="width:0%"></div></div>
     </div>
     <div class="craft-tree" id="craftTreeContainer"></div>
+    <div class="craft-list-view" id="craftListContainer" style="display:none;"></div>
   </div>
 </div>
 

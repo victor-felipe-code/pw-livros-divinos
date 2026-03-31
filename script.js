@@ -373,6 +373,33 @@ function renderAll() {
 let currentGlobalPool = {};
 
 // Tree logic
+let treeViewMode = 'tree';
+
+function setupTreeToggles() {
+  const btnTree = document.getElementById('btnViewTree');
+  const btnList = document.getElementById('btnViewList');
+  if(!btnTree || !btnList) return;
+  
+  btnTree.onclick = () => {
+    treeViewMode = 'tree';
+    btnTree.classList.add('active');
+    btnList.classList.remove('active');
+    document.getElementById('craftTreeContainer').style.display = 'flex';
+    document.getElementById('treeCostPanel').style.display = 'block';
+    document.getElementById('craftListContainer').style.display = 'none';
+  };
+  
+  btnList.onclick = () => {
+    treeViewMode = 'list';
+    btnList.classList.add('active');
+    btnTree.classList.remove('active');
+    document.getElementById('craftTreeContainer').style.display = 'none';
+    document.getElementById('treeCostPanel').style.display = 'none';
+    document.getElementById('craftListContainer').style.display = 'block';
+  };
+}
+setupTreeToggles();
+
 function openTree(book) {
   document.getElementById('modalOverlay').classList.remove('open');
   const overlay = document.getElementById('treeOverlay');
@@ -387,6 +414,18 @@ function openTree(book) {
   document.getElementById('craftTreeContainer').innerHTML = buildTreeNodeHtml(book.nome, 1, book.nome);
   bindTreeEvents();
   updateTreeCosts(book.nome);
+  renderCraftList(book.nome);
+
+  // Apply current view mode visibility
+  if(treeViewMode === 'tree') {
+    document.getElementById('craftTreeContainer').style.display = 'flex';
+    document.getElementById('treeCostPanel').style.display = 'block';
+    document.getElementById('craftListContainer').style.display = 'none';
+  } else {
+    document.getElementById('craftTreeContainer').style.display = 'none';
+    document.getElementById('treeCostPanel').style.display = 'none';
+    document.getElementById('craftListContainer').style.display = 'block';
+  }
 
   overlay.classList.add('open');
 }
@@ -483,6 +522,7 @@ function bindTreeEvents() {
       document.getElementById('craftTreeContainer').innerHTML = buildTreeNodeHtml(rootName, 1, rootName);
       bindTreeEvents();
       updateTreeCosts(rootName);
+      renderCraftList(rootName);
     };
   });
 }
@@ -523,6 +563,151 @@ function updateTreeCosts(bookName) {
   bar.style.width = pct + '%';
   if(pct === 100) bar.style.background = '#88c5ff';
   else bar.style.background = 'linear-gradient(90deg, var(--gold-dark), #88c5ff)';
+  
+  // Also fix the visibility if we are currently in list mode
+  if(treeViewMode === 'list') {
+    panel.style.display = 'none';
+  } else {
+    panel.style.display = Object.keys(rem).length === 0 ? 'none' : 'block';
+  }
+}
+
+// Quantitative List View Logic
+function renderCraftList(rootBookName) {
+  const container = document.getElementById('craftListContainer');
+  let listItems = {}; 
+  
+  let tempPool = {};
+  owned.forEach(x => {
+    if(!x.startsWith('@')) tempPool[x] = (tempPool[x] || 0) + 1;
+  });
+
+  function traverse(bName, path, qtyInNode) {
+    if(!listItems[bName]) {
+      const bObj = allBooks.find(b => b.nome === bName);
+      listItems[bName] = {
+        name: bName,
+        totalNodes: 0,
+        ownedNodes: 0,
+        image: bObj ? bObj.imagem : 'images/fragmentodeescritadivina.jpg',
+        level: bObj ? bObj.nivel : 0,
+        isBase: !bObj
+      };
+    }
+    
+    listItems[bName].totalNodes += qtyInNode;
+
+    const specificKey = '@' + path + '|' + bName;
+    let isOwnedInst = false;
+    
+    if (owned.includes(specificKey)) {
+      isOwnedInst = true;
+    } else if (tempPool[bName] > 0) {
+      isOwnedInst = true;
+      tempPool[bName]--;
+    }
+    
+    if (isOwnedInst) {
+      listItems[bName].ownedNodes += qtyInNode;
+    }
+    
+    // Only traverse children if this node is not already owned, because if owned, we don't need to gather its parts!
+    if (!isOwnedInst) {
+      const book = allBooks.find(b => b.nome === bName);
+      if (book && book.materiais) {
+        book.materiais.forEach((m, idx) => {
+          traverse(m.nome, path + '-' + idx, m.quantidade || 1);
+        });
+      }
+    }
+  }
+
+  traverse(rootBookName, rootBookName, 1);
+  
+  let itemsArr = Object.values(listItems);
+  
+  // Sort: Intermediate books first (by level desc), then base materials
+  itemsArr.sort((a, b) => {
+    if (a.isBase !== b.isBase) return a.isBase ? 1 : -1;
+    if (a.level !== b.level) return b.level - a.level;
+    return a.name.localeCompare(b.name);
+  });
+  
+  let html = `
+    <div class="list-view-header">
+      <h3>Lista Quantitativa — ${rootBookName}</h3>
+      <p>Quantidade de materiais e livros não obtidos na árvore.<br>
+      Clique em [+] para marcar avulsos. Marcar um intermediário já desconta seus materiais.</p>
+    </div>
+    <div class="list-items-container">
+  `;
+  
+  let allDone = true;
+  
+  itemsArr.forEach(item => {
+    const isCompleted = item.ownedNodes >= item.totalNodes;
+    if(!isCompleted) allDone = false;
+    const completedClass = isCompleted ? ' completed' : '';
+    
+    html += `
+      <div class="list-item${completedClass}">
+        <div class="list-item-left">
+          <img src="${item.image}" onerror="this.src=''; this.style.opacity=0.3">
+          <div class="list-item-info">
+            <span class="list-item-name">${item.name}</span>
+            ${item.level > 0 ? `<span class="list-item-lvl">Nível ${item.level}</span>` : ''}
+          </div>
+        </div>
+        <div class="list-item-right">
+          <div class="list-item-stats">
+            <span class="list-item-req">Necessário: <b>${item.totalNodes}x</b></span>
+            <span class="list-item-own">Obtido: <b>${item.ownedNodes}x</b></span>
+          </div>
+          <div class="list-item-actions">
+            <button class="list-btn" onclick="addGlobalOwnedFromList('${item.name}','${rootBookName}')" title="Marcar +1 como obtido">+</button>
+            <button class="list-btn" onclick="removeGlobalOwnedFromList('${item.name}','${rootBookName}')" title="Remover 1">-</button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  if (itemsArr.length === 0 || allDone) {
+    html += `<div style="text-align:center; padding: 2rem; color: var(--gold); font-family: 'Cinzel', serif;">Este livro já pode ser confeccionado ou todos os materiais estão disponíveis!</div>`;
+  }
+  
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+window.addGlobalOwnedFromList = function(name, rootName) {
+  owned.push(name);
+  saveOwned();
+  refreshTreeAndList(rootName);
+};
+
+window.removeGlobalOwnedFromList = function(name, rootName) {
+  const idx = owned.indexOf(name);
+  if (idx > -1) {
+    owned.splice(idx, 1);
+  } else {
+    const specIdx = owned.findIndex(x => x.endsWith('|' + name));
+    if (specIdx > -1) owned.splice(specIdx, 1);
+  }
+  saveOwned();
+  refreshTreeAndList(rootName);
+};
+
+function refreshTreeAndList(rootName) {
+  currentGlobalPool = {};
+  owned.forEach(x => {
+    if (!x.startsWith('@')) currentGlobalPool[x] = (currentGlobalPool[x] || 0) + 1;
+  });
+  document.getElementById('craftTreeContainer').innerHTML = buildTreeNodeHtml(rootName, 1, rootName);
+  bindTreeEvents();
+  updateTreeCosts(rootName);
+  renderCraftList(rootName);
+  renderAll(); // ensure main UI stays consistent globally
 }
 
 // Presets
