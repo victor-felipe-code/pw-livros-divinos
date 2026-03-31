@@ -333,7 +333,7 @@ header p {
 /* GRID */
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1rem;
 }
 
@@ -346,7 +346,7 @@ header p {
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to allow badges to breath */
 }
 
 .book-card::before {
@@ -365,10 +365,17 @@ header p {
 }
 
 .book-card.owned::after {
-  content: '✓';
+  content: '✓ OBTIDO';
   position: absolute; top: 0.5rem; right: 0.6rem;
-  color: var(--gold); font-size: 0.9rem;
+  color: var(--gold); 
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
   font-weight: bold;
+  background: rgba(201,168,76,0.1);
+  padding: 0.1rem 0.4rem;
+  border-radius: 2px;
+  border: 1px solid rgba(201,168,76,0.2);
 }
 
 .card-top {
@@ -390,27 +397,37 @@ header p {
   image-rendering: pixelated;
 }
 
-.card-info { flex: 1; min-width: 0; }
+.card-info { 
+  flex: 1; 
+  min-width: 0; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center;
+  gap: 0.2rem;
+}
 
 .card-name {
   font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 700;
   color: var(--parchment);
-  line-height: 1.3;
-  margin-bottom: 0.2rem;
+  line-height: 1.25;
+  margin-bottom: 0;
+  word-break: break-word;
 }
 
 .card-level {
-  display: inline-block;
+  display: inline-flex;
+  align-self: flex-start;
   font-family: 'Cinzel', serif;
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
   color: var(--gold-dark);
-  background: rgba(201,168,76,0.1);
-  padding: 0.1rem 0.35rem;
+  background: rgba(201,168,76,0.12);
+  padding: 0.15rem 0.45rem;
   border-radius: 2px;
-  border: 1px solid rgba(201,168,76,0.2);
+  border: 1px solid rgba(201,168,76,0.25);
+  margin-top: 0.1rem;
 }
 
 .card-effects {
@@ -419,22 +436,24 @@ header p {
 }
 
 .effect-tag {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: #88c5ff;
-  background: rgba(136,197,255,0.08);
-  border: 1px solid rgba(136,197,255,0.15);
-  padding: 0.1rem 0.35rem;
+  background: rgba(136,197,255,0.06);
+  border: 1px solid rgba(136,197,255,0.12);
+  padding: 0.15rem 0.4rem;
   border-radius: 2px;
+  white-space: nowrap;
 }
 
 .card-mats {
-  display: flex; gap: 0.3rem; flex-wrap: wrap;
-  padding-top: 0.5rem;
-  border-top: 1px solid rgba(201,168,76,0.1);
+  display: flex; gap: 0.35rem; flex-wrap: wrap;
+  padding-top: 0.6rem;
+  margin-top: 0.2rem;
+  border-top: 1px solid rgba(201,168,76,0.08);
 }
 
 .mat-thumb {
-  width: 22px; height: 22px;
+  width: 24px; height: 24px;
   object-fit: contain; image-rendering: pixelated;
   background: rgba(201,168,76,0.06);
   border: 1px solid rgba(201,168,76,0.15);
@@ -656,7 +675,21 @@ header p {
 /* CRAFTABLE GLOW */
 .book-card.craftable { border-color: rgba(136,197,255,0.4); box-shadow: 0 0 10px rgba(136,197,255,0.1); }
 .book-card.craftable::before { background: linear-gradient(135deg, rgba(136,197,255,0.1) 0%, transparent 60%); opacity: 1; }
-.craftable-badge { position: absolute; top: 0.5rem; left: 0.6rem; font-size: 0.6rem; background: rgba(136,197,255,0.15); color: #88c5ff; padding: 0.1rem 0.3rem; border-radius: 2px; border: 1px solid rgba(136,197,255,0.3); font-family: 'Cinzel', serif; z-index: 5; }
+.craftable-badge { 
+  position: absolute; 
+  top: -0.4rem; 
+  right: -0.4rem; 
+  font-size: 0.6rem; 
+  background: rgba(26, 42, 94, 0.9);
+  color: #88c5ff; 
+  padding: 0.2rem 0.5rem; 
+  border-radius: 4px; 
+  border: 1px solid rgba(136,197,255,0.4); 
+  font-family: 'Cinzel', serif; 
+  z-index: 5;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  pointer-events: none;
+}
 
 /* TREE OVERLAY */
 .tree-overlay { display: none; position: fixed; inset: 0; z-index: 1500; background: rgba(13,11,8,0.95); flex-direction: column; backdrop-filter: blur(8px); }
