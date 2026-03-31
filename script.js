@@ -472,11 +472,19 @@ function buildTreeNodeHtml(bookName, qty, path) {
   `;
   
   if (book && book.materiais && book.materiais.length) {
-    html += `<div class="tree-children">`;
+    let childHtmlNodes = [];
     book.materiais.forEach((m, idx) => {
-      html += `<div class="tree-child-wrapper">${buildTreeNodeHtml(m.nome, m.quantidade || 1, path + '-' + idx)}</div>`;
+      // Esconder ingredientes base da arvore para limpar o visual
+      if (m.nome !== 'Fragmentos de Escrita Divina' && m.nome !== 'Livros em Branco Divino') {
+        childHtmlNodes.push(`<div class="tree-child-wrapper">${buildTreeNodeHtml(m.nome, m.quantidade || 1, path + '-' + idx)}</div>`);
+      }
     });
-    html += `</div>`;
+    
+    if (childHtmlNodes.length > 0) {
+      html += `<div class="tree-children">`;
+      html += childHtmlNodes.join('');
+      html += `</div>`;
+    }
   }
   
   html += `</div>`;
@@ -485,8 +493,27 @@ function buildTreeNodeHtml(bookName, qty, path) {
 
 function bindTreeEvents() {
   document.querySelectorAll('.tree-node').forEach(node => {
+    // Tooltip logic
+    node.onmouseenter = (e) => {
+      const name = node.dataset.name;
+      const tooltip = document.getElementById('tooltip');
+      tooltip.textContent = name;
+      tooltip.style.display = 'block';
+      tooltip.style.left = (e.clientX + 12) + 'px';
+      tooltip.style.top = (e.clientY + 12) + 'px';
+    };
+    node.onmousemove = (e) => {
+      const tooltip = document.getElementById('tooltip');
+      tooltip.style.left = (e.clientX + 12) + 'px';
+      tooltip.style.top = (e.clientY + 12) + 'px';
+    };
+    node.onmouseleave = (e) => {
+      document.getElementById('tooltip').style.display = 'none';
+    };
+
     node.onclick = (e) => {
       e.stopPropagation();
+      document.getElementById('tooltip').style.display = 'none'; // hide tooltip on click refresh
       const name = node.dataset.name;
       const b = allBooks.find(bk => bk.nome === name);
       if(!b) return; // don't toggle raw base mats
