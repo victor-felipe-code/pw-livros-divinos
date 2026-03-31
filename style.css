@@ -758,6 +758,7 @@ header p {
 .view-toggle-btn { font-family: 'Cinzel', serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; background: transparent; color: rgba(201,168,76,0.5); border: none; padding: 0.5rem 0.8rem; cursor: pointer; transition: 0.2s; outline: none; }
 .view-toggle-btn:hover { background: rgba(201,168,76,0.1); color: var(--gold); }
 .view-toggle-btn.active { background: var(--gold); color: var(--ink); font-weight: bold; }
+.view-toggle-btn.reset-btn:hover { background: rgba(139, 26, 26, 0.4); color: white; border-color: var(--red-light); }
 
 /* QUANTITATIVE LIST VIEW */
 .craft-list-view { width: 100%; max-width: 800px; margin: 0 auto; background: linear-gradient(135deg, rgba(201,168,76,0.04) 0%, rgba(13,11,8,0.8) 100%); border: 1px solid rgba(201,168,76,0.15); border-radius: 6px; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }

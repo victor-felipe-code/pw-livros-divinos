@@ -27,6 +27,7 @@ let searchQ = '';
 let statFilter = '';
 let ownedFilterMode = 'all';
 let modalBook = null;
+let currentTreeRoot = null;
 
 function showToast(msg) {
   const container = document.getElementById('toastContainer');
@@ -408,7 +409,36 @@ function setupTreeToggles() {
 }
 setupTreeToggles();
 
+document.getElementById('btnResetTree').onclick = () => {
+  if (currentTreeRoot && confirm(`Deseja resetar todo o progresso marcado para a árvore de "${currentTreeRoot}"?`)) {
+    // Collect ALL book names in this tree (recursive)
+    const treeBookNames = new Set();
+    function collectTreeNames(bName) {
+      treeBookNames.add(bName);
+      const book = allBooks.find(b => b.nome === bName);
+      if (book && book.materiais) {
+        book.materiais.forEach(m => {
+          if (!treeBookNames.has(m.nome)) collectTreeNames(m.nome);
+        });
+      }
+    }
+    collectTreeNames(currentTreeRoot);
+
+    // Remove specific tree entries (@path|nome) AND global simple entries for books in this tree
+    owned = owned.filter(x => {
+      if (x.startsWith('@' + currentTreeRoot)) return false; // specific tree entries
+      if (!x.startsWith('@') && treeBookNames.has(x)) return false; // global entries for books in this tree
+      return true;
+    });
+
+    saveOwned();
+    refreshTreeAndList(currentTreeRoot);
+    showToast('Progresso da árvore resetado.');
+  }
+};
+
 function openTree(book) {
+  currentTreeRoot = book.nome;
   document.getElementById('modalOverlay').classList.remove('open');
   const overlay = document.getElementById('treeOverlay');
   document.getElementById('treeTitleImg').src = book.imagem || '';
